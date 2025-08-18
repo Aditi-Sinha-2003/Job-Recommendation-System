@@ -1,0 +1,18 @@
+[
+  {
+    "skill": "Python",
+    "demand_score": 90
+  },
+  {
+    "skill": "FastAPI",
+    "demand_score": 75
+  },
+  {
+    "skill": "SQL",
+    "demand_score": 80
+  },
+  {
+    "skill": "Pandas",
+    "demand_score": 70
+  }
+]

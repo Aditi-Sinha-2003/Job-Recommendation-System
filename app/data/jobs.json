@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "title": "Backend Developer",
+    "company": "Tech Corp",
+    "location": "Bangalore",
+    "salary": "₹8,00,000",
+    "match_score": 85,
+    "skills": ["Python", "FastAPI", "SQL"],
+    "description": "Develop backend APIs using FastAPI and connect with databases."
+  },
+  {
+    "id": 2,
+    "title": "Data Analyst",
+    "company": "DataX",
+    "location": "Mumbai",
+    "salary": "₹6,00,000",
+    "match_score": 75,
+    "skills": ["Python", "Pandas", "SQL"],
+    "description": "Analyze datasets and generate reports for business insights."
+  }
+]

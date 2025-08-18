@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "title": "FastAPI for Beginners",
+    "provider": "Udemy",
+    "link": "https://www.udemy.com/course/fastapi-for-beginners/",
+    "rating": 4.5,
+    "skills": ["Python", "FastAPI"]
+  },
+  {
+    "id": 2,
+    "title": "Data Analysis with Python",
+    "provider": "Coursera",
+    "link": "https://www.coursera.org/learn/data-analysis-python",
+    "rating": 4.7,
+    "skills": ["Python", "Pandas", "SQL"]
+  }
+]

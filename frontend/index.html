@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerPulse | AI-Powered Career Advisor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #8b5cf6;
+            --primary-dark: #7c3aed;
+            --accent: #f59e0b;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+        }
+        
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .skill-pill {
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .skill-pill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        }
+        
+        .skill-pill:hover::after {
+            animation: shine 1.5s;
+        }
+        
+        @keyframes shine {
+            100% { left: 100%; }
+        }
+        
+        .course-card:hover .course-icon {
+            transform: translateY(-5px) scale(1.1);
+        }
+        
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.5s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Floating animated shapes -->
+    <div class="fixed inset-0 overflow-hidden -z-10">
+        <div class="absolute top-20 left-10 w-64 h-64 rounded-full bg-purple-100 opacity-20 blur-3xl animate-float"></div>
+        <div class="absolute bottom-20 right-10 w-80 h-80 rounded-full bg-indigo-100 opacity-20 blur-3xl animate-float" style="animation-delay: 2s;"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="glass-card sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <a href="#" class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-purple-600 to-indigo-500 rounded-lg flex items-center justify-center text-white font-bold text-lg">
+                        CS
+                    </div>
+                    <span class="text-xl font-bold bg-gradient-to-r from-purple-600 to-indigo-500 bg-clip-text text-transparent">CareerSense</span>
+                </a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#features" class="text-gray-600 hover:text-purple-600 transition-all">Features</a>
+                    <a href="#how-it-works" class="text-gray-600 hover:text-purple-600 transition-all">How It Works</a>
+                    <a href="#testimonials" class="text-gray-600 hover:text-purple-600 transition-all">Testimonials</a>
+                    <button id="cta-nav" class="bg-gradient-to-r from-purple-600 to-indigo-500 text-white px-5 py-2 rounded-lg hover:from-purple-700 hover:to-indigo-600 transition-all shadow-md hover:shadow-purple-200">
+                        Try For Free
+                    </button>
+                </div>
+                <button class="md:hidden text-gray-600">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-20 pb-32">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="animate-fade-in">
+                    <div class="inline-flex items-center px-4 py-2 rounded-full bg-purple-50 text-purple-700 mb-6">
+                        <span class="h-2 w-2 rounded-full bg-purple-600 mr-2"></span>
+                        <span class="text-sm font-medium">AI CAREER ADVISOR</span>
+                    </div>
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
+                        Smarter <span class="bg-gradient-to-r from-purple-600 to-indigo-500 bg-clip-text text-transparent">Career Moves</span> Powered by AI
+                    </h1>
+                    <p class="text-lg md:text-xl text-gray-600 mb-8">
+                        Upload your resume and get personalized job recommendations, skill gap analysis, and course suggestions to accelerate your career growth.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button id="hero-upload" class="bg-gradient-to-r from-purple-600 to-indigo-500 text-white px-8 py-4 rounded-xl font-medium hover:from-purple-700 hover:to-indigo-600 transition-all shadow-lg hover:shadow-purple-200 flex items-center justify-center">
+                            <i class="fas fa-cloud-upload-alt mr-3"></i> Upload Resume
+                        </button>
+                        <button class="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-xl font-medium hover:border-purple-300 hover:text-purple-600 transition-all flex items-center justify-center">
+                            <i class="fas fa-play-circle mr-3"></i> Watch Demo
+                        </button>
+                    </div>
+                    <div class="mt-8 flex items-center">
+                        <div class="flex -space-x-2">
+                            <img class="w-10 h-10 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/women/43.jpg" alt="User">
+                            <img class="w-10 h-10 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+                            <img class="w-10 h-10 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/women/65.jpg" alt="User">
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm text-gray-600">Trusted by <span class="font-semibold">10,000+</span> professionals</p>
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 mr-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                                <span class="text-sm text-gray-500">4.9/5 from 850+ reviews</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative animate-fade-in" style="animation-delay: 0.3s;">
+                    <div class="absolute inset-0 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-3xl opacity-10"></div>
+                    <div class="glass-card relative p-2 rounded-3xl overflow-hidden">
+                        <img src="choice-worker-concept_23-2148626349.avif" alt="Career analysis dashboard showing job matches and skills" class="rounded-2xl w-full">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Logo Cloud -->
+    <section class="py-12 bg-gradient-to-r from-white to-gray-50">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <p class="text-center text-sm text-gray-500 mb-8">TRUSTED BY COMPANIES WORLDWIDE</p>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 items-center">
+                <img src="https://placehold.co/160x80/fff/4B0082?text=TECH+" alt="Tech Plus" class="h-10 mx-auto opacity-70 hover:opacity-100 transition-opacity">
+                <img src="https://placehold.co/280x80/fff/4B0082?text=INNOVATE" alt="Innovate" class="h-10 mx-auto opacity-70 hover:opacity-100 transition-opacity">
+                <img src="https://placehold.co/180x80/fff/4B0082?text=DIGITAL+" alt="Digital+" class="h-12 mx-auto opacity-70 hover:opacity-100 transition-opacity">
+                <img src="https://placehold.co/280x80/fff/4B0082?text=GLOBEX" alt="Globex" class="h-8 mx-auto opacity-70 hover:opacity-100 transition-opacity">
+                <img src="https://placehold.co/280x80/fff/4B0082?text=CREATIVE" alt="Creative" class="h-10 mx-auto opacity-70 hover:opacity-100 transition-opacity">
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="py-20">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-2 bg-purple-50 text-purple-600 rounded-full text-sm font-medium mb-4">
+                    AI-POWERED FEATURES
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                    Your Complete <span class="bg-gradient-to-r from-purple-600 to-indigo-500 bg-clip-text text-transparent">Career Toolkit</span>
+                </h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                    All the tools you need to discover opportunities, develop skills, and advance your career
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="glass-card p-8 rounded-2xl hover:shadow-lg transition-all">
+                    <div class="w-14 h-14 bg-gradient-to-br from-purple-100 to-purple-50 rounded-xl flex items-center justify-center text-purple-600 text-xl mb-6">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Smart Job Matching</h3>
+                    <p class="text-gray-600 mb-4">
+                        Our AI matches your skills and experience with the perfect job opportunities from thousands of listings.
+                    </p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-purple-500 mt-1 mr-2 text-sm"></i>
+                            <span>Personalized job recommendations</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-purple-500 mt-1 mr-2 text-sm"></i>
+                            <span>Salary estimates based on your profile</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-purple-500 mt-1 mr-2 text-sm"></i>
+                            <span>Company culture matching</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="glass-card p-8 rounded-2xl hover:shadow-lg transition-all">
+                    <div class="w-14 h-14 bg-gradient-to-br from-indigo-100 to-indigo-50 rounded-xl flex items-center justify-center text-indigo-600 text-xl mb-6">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Market Trend Analysis</h3>
+                    <p class="text-gray-600 mb-4">
+                        See which skills are in demand and where the job market is heading with real-time data analysis.
+                    </p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-indigo-500 mt-1 mr-2 text-sm"></i>
+                            <span>Emerging skill trends</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-indigo-500 mt-1 mr-2 text-sm"></i>
+                            <span>Regional job market insights</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-indigo-500 mt-1 mr-2 text-sm"></i>
+                            <span>Industry growth projections</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="glass-card p-8 rounded-2xl hover:shadow-lg transition-all">
+                    <div class="w-14 h-14 bg-gradient-to-br from-yellow-100 to-yellow-50 rounded-xl flex items-center justify-center text-yellow-600 text-xl mb-6">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Personalized Learning Paths</h3>
+                    <p class="text-gray-600 mb-4">
+                        Get custom course recommendations to fill your skill gaps and stay ahead of the competition.
+                    </p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-yellow-500 mt-1 mr-2 text-sm"></i>
+                            <span>Personalized course suggestions</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-yellow-500 mt-1 mr-2 text-sm"></i>
+                            <span>Skill development roadmap</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-yellow-500 mt-1 mr-2 text-sm"></i>
+                            <span>Certification guidance</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="py-20 bg-gradient-to-br from-gray-50 to-white">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-2 bg-purple-50 text-purple-600 rounded-full text-sm font-medium mb-4">
+                    SIMPLE PROCESS
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                    Get Career Insights in <span class="bg-gradient-to-r from-purple-600 to-indigo-500 bg-clip-text text-transparent">3 Easy Steps</span>
+                </h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                    Our AI analyzes your profile and delivers actionable career recommendations instantly
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 relative">
+                <!-- Step 1 -->
+                <div class="glass-card p-8 rounded-2xl relative z-10">
+                    <div class="absolute top-0 right-0 mt-6 mr-6 bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                        1
+                    </div>
+                    <div class="w-20 h-20 bg-gradient-to-br from-purple-100 to-purple-50 rounded-2xl flex items-center justify-center text-purple-600 text-3xl mb-6">
+                        <i class="fas fa-upload"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Upload Your Resume</h3>
+                    <p class="text-gray-600">
+                        Simply upload your resume in PDF, Word, or text format. Our AI extracts skills, experience, and education automatically.
+                    </p>
+                    <div class="mt-6 border-t border-gray-100 pt-6 border-dashed">
+                        <div class="flex items-center space-x-2 text-sm text-gray-500">
+                            <i class="fas fa-lock"></i>
+                            <span>256-bit encryption</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="glass-card p-8 rounded-2xl relative z-10 md:mt-10">
+                    <div class="absolute top-0 right-0 mt-6 mr-6 bg-indigo-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                        2
+                    </div>
+                    <div class="w-20 h-20 bg-gradient-to-br from-indigo-100 to-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 text-3xl mb-6">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">AI Analysis Process</h3>
+                    <p class="text-gray-600">
+                        Our algorithms analyze your profile against thousands of job listings and market trends to identify your best opportunities.
+                    </p>
+                    <div class="mt-6 border-t border-gray-100 pt-6 border-dashed">
+                        <div class="flex items-center space-x-2 text-sm text-gray-500">
+                            <i class="fas fa-microchip"></i>
+                            <span>Machine learning powered</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="glass-card p-8 rounded-2xl relative z-10 md:mt-20">
+                    <div class="absolute top-0 right-0 mt-6 mr-6 bg-amber-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                        3
+                    </div>
+                    <div class="w-20 h-20 bg-gradient-to-br from-amber-100 to-amber-50 rounded-2xl flex items-center justify-center text-amber-600 text-3xl mb-6">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Get Personalized Results</h3>
+                    <p class="text-gray-600">
+                        Receive your custom career dashboard with job matches, skill gaps, recommended courses, and market insights.
+                    </p>
+                    <div class="mt-6 border-t border-gray-100 pt-6 border-dashed">
+                        <div class="flex items-center space-x-2 text-sm text-gray-500">
+                            <i class="fas fa-sync-alt"></i>
+                            <span>Updates automatically</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Connecting line -->
+                <div class="hidden md:block absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-purple-100 via-indigo-100 to-amber-100 transform -translate-y-1/2 z-0"></div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4" style="text-align: center;">Real-Time Job Listings</h2>
+        <ul id="jobs-container" class="grid gap-4"></ul>
+
+
+    </section>
+    <!-- Resume Analyzer -->
+    <section class="py-20">
+        <div class="max-w-6xl mx-auto px-6 lg:px-8">
+            <div class="glass-card overflow-hidden rounded-2xl">
+                <div class="grid lg:grid-cols-2">
+                    <div class="p-10 bg-gradient-to-br from-purple-600 to-indigo-600 text-white relative">
+                        <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgcGF0dGVyblRyYW5zZm9ybT0icm90YXRlKDQ1KSI+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjMwIiBoZWlnaHQ9IjMwIiBmaWxsPSJ0cmFuc3BhcmVudCI+PC9yZWN0PjwvcGF0dGVybj48L2RlZnM+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSI+PC9yZWN0Pjwvc3ZnPg==');"></div>
+                        <div class="relative z-10">
+                            <h2 class="text-3xl font-bold mb-6">AI Resume Analyzer</h2>
+                            <p class="text-purple-100 mb-8 leading-relaxed">
+                                Get instant insights on your resume's strengths and weaknesses. Our technology evaluates your profile against current job market requirements and suggests improvements.
+                            </p>
+                            <div class="space-y-6">
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 mt-1">
+                                        <div class="w-8 h-8 rounded-full bg-white bg-opacity-20 flex items-center justify-center">
+                                            <i class="fas fa-check text-sm text-white"></i>
+                                        </div>
+                                    </div>
+                                    <div class="ml-4">
+                                        <h4 class="font-semibold">Skill Extraction</h4>
+                                        <p class="text-purple-100 text-sm mt-1">Identifies both technical and soft skills</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 mt-1">
+                                        <div class="w-8 h-8 rounded-full bg-white bg-opacity-20 flex items-center justify-center">
+                                            <i class="fas fa-check text-sm text-white"></i>
+                                        </div>
+                                    </div>
+                                    <div class="ml-4">
+                                        <h4 class="font-semibold">Gap Analysis</h4>
+                                        <p class="text-purple-100 text-sm mt-1">Highlights skills needed for your target roles</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 mt-1">
+                                        <div class="w-8 h-8 rounded-full bg-white bg-opacity-20 flex items-center justify-center">
+                                            <i class="fas fa-check text-sm text-white"></i>
+                                        </div>
+                                    </div>
+                                    <div class="ml-4">
+                                        <h4 class="font-semibold">ATS Optimization</h4>
+                                        <p class="text-purple-100 text-sm mt-1">Ensures your resume passes automated screening</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-10 bg-white">
+                        <div class="h-full flex flex-col justify-center">
+                            <!-- Resume Upload Area -->
+                            <div id="resume-upload" class="resume-upload-area border-2 border-dashed rounded-xl p-8 text-center cursor-pointer mb-8 transition-all hover:border-purple-500 hover:bg-purple-50/30">
+                                <div class="inline-flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full text-purple-500 mb-4">
+                                    <i class="fas fa-cloud-upload-alt text-2xl"></i>
+                                </div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-2">Drag & Drop Your Resume</h3>
+                                <p class="text-gray-500 mb-4">or click to browse files (PDF, DOC, DOCX)</p>
+                                <button class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-all">
+                                    <i class="fas fa-file-upload mr-2"></i> Select File
+                                </button>
+                                <p class="text-xs text-gray-400 mt-4">We don't store your resume after analysis</p>
+                            </div>
+                            <input type="file" id="file-upload" class="hidden" accept=".pdf,.doc,.docx">
+                            
+                            <!-- Alternative Options -->
+                            <div class="mt-auto">
+                                <div class="flex items-center text-gray-500 mb-4">
+                                    <div class="flex-1 h-px bg-gray-200"></div>
+                                    <span class="mx-4 text-sm">or connect with</span>
+                                    <div class="flex-1 h-px bg-gray-200"></div>
+                                </div>
+                                <div class="flex justify-center space-x-4">
+                                    <button class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 transition-colors">
+                                        <i class="fab fa-linkedin-in"></i>
+                                    </button>
+                                    <button class="w-10 h-10 rounded-full bg-gray-800 text-white flex items-center justify-center hover:bg-gray-900 transition-colors">
+                                        <i class="fab fa-github"></i>
+                                    </button>
+                                    <button class="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center hover:bg-red-700 transition-colors">
+                                        <i class="fab fa-google"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Analysis Dashboard (Hidden Initially) -->
+    <section id="analysis-dashboard" class="hidden py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex justify-between items-center mb-12">
+                <h2 class="text-2xl font-bold text-gray-900">Your Career Analysis</h2>
+                <button class="text-purple-600 hover:text-purple-800 font-medium flex items-center">
+                    <i class="fas fa-sync-alt mr-2"></i> Re-analyze Resume
+                </button>
+            </div>
+            
+            <!-- Summary Cards -->
+            <div class="grid md:grid-cols-3 gap-6 mb-12">
+                <div class="glass-card p-6 rounded-xl border-l-4 border-purple-500">
+                    <h3 class="font-semibold text-gray-800 mb-3">Profile Strength</h3>
+                    <div class="flex items-end mb-4">
+                        <span class="text-3xl font-bold text-gray-800">78</span>
+                        <span class="text-lg text-gray-500 ml-1">/100</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-purple-400 to-purple-600 h-2 rounded-full" style="width: 78%"></div>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2">Better than 82% of similar profiles</p>
+                </div>
+                
+                <div class="glass-card p-6 rounded-xl border-l-4 border-indigo-500">
+                    <h3 class="font-semibold text-gray-800 mb-3">Best Match Roles</h3>
+                    <div class="flex items-baseline mb-2">
+                        <span class="text-2xl font-bold text-gray-800">92%</span>
+                        <span class="text-sm text-gray-500 ml-1">match</span>
+                    </div>
+                    <p class="text-gray-600">Senior Frontend Developer</p>
+                    <div class="mt-3 flex flex-wrap gap-2">
+                        <span class="text-xs px-2 py-1 bg-indigo-50 text-indigo-700 rounded-full">React</span>
+                        <span class="text-xs px-2 py-1 bg-indigo-50 text-indigo-700 rounded-full">JavaScript</span>
+                    </div>
+                </div>
+                
+                <div class="glass-card p-6 rounded-xl border-l-4 border-amber-500">
+                    <h3 class="font-semibold text-gray-800 mb-3">Course Recommendations</h3>
+                    <div class="flex items-center mb-4">
+                        <span class="text-2xl font-bold text-gray-800">5</span>
+                        <span class="text-sm text-gray-500 ml-1">top picks</span>
+                    </div>
+                    <p class="text-gray-600">To maximize your career potential</p>
+                    <div class="mt-3">
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="fas fa-clock mr-1"></i>
+                            <span>Estimated career boost: ~25%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Job Recommendations -->
+                <div class="lg:col-span-2">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-semibold text-gray-800">Recommended Jobs</h3>
+                        <div class="relative">
+                            <select class="appearance-none bg-white border border-gray-300 rounded-lg pl-4 pr-8 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                <option>All Industries</option>
+                                <option selected>Technology</option>
+                                <option>Finance</option>
+                                <option>Healthcare</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <!-- Job 1 -->
+                        <div class="job-card glass-card p-6 rounded-xl shadow-sm hover:shadow-md transition-all relative">
+                            <div class="flex justify-between">
+                                <div>
+                                    <h4 class="text-xl font-semibold text-gray-800 mb-1">Senior Frontend Developer</h4>
+                                    <p class="text-purple-600 font-medium">TechSolutions Inc.</p>
+                                </div>
+                                <div class="flex items-center h-8 px-3 rounded-full bg-green-100 text-green-800 text-sm font-medium">
+                                    <span class="relative flex h-2 w-2 mr-2">
+                                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                        <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                                    </span>
+                                    95% Match
+                                </div>
+                            </div>
+                            <p class="text-gray-600 my-3">Looking for an experienced React developer to lead our frontend team and architect scalable solutions.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="skill-pill px-3 py-1 bg-purple-50 text-purple-700 text-sm rounded-full hover:bg-purple-100">React</span>
+                                <span class="skill-pill px-3 py-1 bg-purple-50 text-purple-700 text-sm rounded-full hover:bg-purple-100">TypeScript</span>
+                                <span class="skill-pill px-3 py-1 bg-purple-50 text-purple-700 text-sm rounded-full hover:bg-purple-100">Redux</span>
+                                <span class="skill-pill px-3 py-1 bg-purple-50 text-purple-700 text-sm rounded-full hover:bg-purple-100">Jest</span>
+                            </div>
+                            <div class="flex flex-wrap items-center justify-between pt-4 border-t border-gray-100">
+                                <div class="flex items-center text-sm text-gray-500">
+                                    <i class="fas fa-map-marker-alt mr-2"></i>
+                                    <span>San Francisco, CA (Remote)</span>
+                                </div>
+                                <div class="text-sm font-medium text-gray-800">$120k - $150k</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Job 2 -->
+                        <div class="job-card glass-card p-6 rounded-xl shadow-sm hover:shadow-md transition-all relative">
+                            <div class="flex justify-between">
+                                <div>
+                                    <h4 class="text-xl font-semibold text-gray-800 mb-1">UI/UX Engineer</h4>
+                                    <p class="text-purple-600 font-medium">DesignHub</p>
+                                </div>
+                                <div class="flex items-center h-8 px-3 rounded-full bg-green-100 text-green-800 text-sm font-medium">
+                                    <span class="relative flex h-2 w-2 mr-2">
+                                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                        <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                                    </span>
+                                    89% Match
+                                </div>
+                            </div>
+                            <p class="text-gray-600 my-3">Join our design team to create beautiful, accessible interfaces with React and design systems.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="skill-pill px-3 py-1 bg-purple-50 text-purple-700 text-sm rounded-full hover:bg-purple-100">UI Design</span>
+                                <span class="skill-pill px-3 py-1 bg-purple-50 text-purple-700 text-sm rounded-full hover:bg-purple-100">Figma</span>
+                                <span class="skill-pill px-3 py-1 bg-purple-50 text-purple-700 text-sm rounded-full hover:bg-purple-100">React</span>
+                                <span class="skill-pill px-3 py-1 bg-purple-50 text-purple-700 text-sm rounded-full hover:bg-purple-100">Storybook</span>
+                            </div>
+                            <div class="flex flex-wrap items-center justify-between pt-4 border-t border-gray-100">
+                                <div class="flex items-center text-sm text-gray-500">
+                                    <i class="fas fa-map-marker-alt mr-2"></i>
+                                    <span>New York, NY (Hybrid)</span>
+                                </div>
+                                <div class="text-sm font-medium text-gray-800">$110k - $140k</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 flex justify-center">
+                        <button class="px-6 py-3 border border-purple-600 text-purple-600 font-medium rounded-lg hover:bg-purple-50 transition-colors">
+                            View All Recommended Jobs (12)
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Market Trends & Courses -->
+                <div class="space-y-8">
+                    <!-- Market Trends -->
+                    <div class="glass-card p-6 rounded-xl">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Market Trends Analysis</h3>
+                        <div class="mb-6">
+                            <canvas id="skillsChart" height="200"></canvas>
+                        </div>
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="font-medium text-gray-800 mb-2">Hot Skills in Your Area</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-purple-50 text-purple-700 text-sm rounded-full">React</span>
+                                    <span class="px-3 py-1 bg-purple-50 text-purple-700 text-sm rounded-full">TypeScript</span>
+                                    <span class="px-3 py-1 bg-purple-50 text-purple-700 text-sm rounded-full">AWS</span>
+                                    <span class="px-3 py-1 bg-purple-50 text-purple-700 text-sm rounded-full">Node.js</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-800 mb-2">Salary Trends</h4>
+                                <p class="text-gray-600 text-sm">Senior Frontend roles in your region have seen a 12% increase in salaries over the past year.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Course Recommendations -->
+                    <div class="glass-card p-6 rounded-xl">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold text-gray-800">Recommended Courses</h3>
+                            <a href="#" class="text-sm text-purple-600 hover:text-purple-800">View All</a>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <!-- Course 1 -->
+                            <div class="course-card flex items-start p-4 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
+                                <div class="course-icon w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600 mr-4 transition-transform">
+                                    <i class="fab fa-react text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">Advanced React Patterns</h4>
+                                    <p class="text-sm text-gray-500 mb-1">Build scalable React applications</p>
+                                    <div class="flex items-center text-xs text-gray-500">
+                                        <span class="mr-3"><i class="fas fa-clock mr-1"></i> 18 hours</span>
+                                        <span><i class="fas fa-star text-yellow-400 mr-1"></i> 4.8 (1,240)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Course 2 -->
+                            <div class="course-card flex items-start p-4 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
+                                <div class="course-icon w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center text-indigo-600 mr-4 transition-transform">
+                                    <i class="fab fa-aws text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">AWS Certified Developer</h4>
+                                    <p class="text-sm text-gray-500 mb-1">Cloud infrastructure management</p>
+                                    <div class="flex items-center text-xs text-gray-500">
+                                        <span class="mr-3"><i class="fas fa-clock mr-1"></i> 30 hours</span>
+                                        <span><i class="fas fa-star text-yellow-400 mr-1"></i> 4.9 (890)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Course 3 -->
+                            <div class="course-card flex items-start p-4 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
+                                <div class="course-icon w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center text-amber-600 mr-4 transition-transform">
+                                    <i class="fas fa-project-diagram text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">System Design Masterclass</h4>
+                                    <p class="text-sm text-gray-500 mb-1">For senior engineers</p>
+                                    <div class="flex items-center text-xs text-gray-500">
+                                        <span class="mr-3"><i class="fas fa-clock mr-1"></i> 15 hours</span>
+                                        <span><i class="fas fa-star text-yellow-400 mr-1"></i> 4.7 (620)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <button class="w-full py-3 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors">
+                                See Personalized Learning Path
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="py-20 bg-gradient-to-br from-purple-600 to-indigo-600 text-white">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="inline-block px-4 py-2 bg-purple-500/30 text-white rounded-full text-sm font-medium mb-4">
+                    SUCCESS STORIES
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">
+                    How CareerPulse Transformed Careers
+                </h2>
+                <p class="text-lg text-purple-100 max-w-3xl mx-auto">
+                    Don't take our word for it - hear what our users have to say
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="glass-card p-8 rounded-2xl bg-white/10 backdrop-blur">
+                    <div class="flex items-center mb-6">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah Johnson" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold">Sarah Johnson</h4>
+                            <p class="text-purple-200 text-sm">Product Manager</p>
+                        </div>
+                    </div>
+                    <div class="mb-4 text-purple-50">
+                        <i class="fas fa-quote-left text-purple-200 mr-2"></i>
+                        CareerPulse helped me identify transferable skills I didn't know I had. I switched from marketing to product management with a 40% salary increase!
+                        <i class="fas fa-quote-right text-purple-200 ml-2"></i>
+                    </div>
+                    <div class="flex text-yellow-400 text-sm">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="glass-card p-8 rounded-2xl bg-white/10 backdrop-blur">
+                    <div class="flex items-center mb-6">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Michael Chen" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold">Michael Chen</h4>
+                            <p class="text-purple-200 text-sm">Senior Developer</p>
+                        </div>
+                    </div>
+                    <div class="mb-4 text-purple-50">
+                        <i class="fas fa-quote-left text-purple-200 mr-2"></i>
+                        The course recommendations were spot-on. I went from mid-level to senior developer within a year by following CareerPulse's tailored learning path.
+                        <i class="fas fa-quote-right text-purple-200 ml-2"></i>
+                    </div>
+                    <div class="flex text-yellow-400 text-sm">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="glass-card p-8 rounded-2xl bg-white/10 backdrop-blur">
+                    <div class="flex items-center mb-6">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Priya Patel" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold">Priya Patel</h4>
+                            <p class="text-purple-200 text-sm">Career Switcher</p>
+                        </div>
+                    </div>
+                    <div class="mb-4 text-purple-50">
+                        <i class="fas fa-quote-left text-purple-200 mr-2"></i>
+                        As someone changing careers, I was lost. CareerPulse showed me exactly which skills to learn to break into UX design - landed my dream job in 6 months!
+                        <i class="fas fa-quote-right text-purple-200 ml-2"></i>
+                    </div>
+                    <div class="flex text-yellow-400 text-sm">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20">
+        <div class="max-w-5xl mx-auto px-6 lg:px-8 text-center">
+            <div class="glass-card p-12 rounded-3xl bg-gradient-to-br from-white to-gray-50 shadow-xl">
+                <span class="inline-block px-4 py-2 bg-gradient-to-r from-purple-100 to-purple-50 text-purple-600 rounded-full text-sm font-medium mb-4">
+                    READY TO LEVEL UP?
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                    Start Your Career Optimization Journey Today
+                </h2>
+                <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+                    Get personalized job recommendations, skill gap analysis, and course suggestions based on your unique profile.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button class="bg-gradient-to-r from-purple-600 to-indigo-500 text-white px-8 py-4 rounded-xl font-medium hover:from-purple-700 hover:to-indigo-600 transition-all shadow-lg hover:shadow-purple-200 flex items-center justify-center">
+                        <i class="fas fa-rocket mr-3"></i> Get Started Now
+                    </button>
+                    <button class="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-xl font-medium hover:border-purple-300 hover:text-purple-600 transition-all flex items-center justify-center">
+                        <i class="fas fa-question-circle mr-3"></i> How It Works
+                    </button>
+                </div>
+                <p class="text-sm text-gray-500 mt-6">
+                    No credit card required. Your data remains private and secure.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-12 mb-16">
+                <div>
+                    <div class="flex items-center space-x-2 mb-6">
+                        <div class="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center text-white font-bold">
+                            CS
+                        </div>
+                        <span class="text-xl font-bold text-white">CareerSense</span>
+                    </div>
+                    <p class="mb-4">
+                        AI-powered career navigation helping professionals find better opportunities faster.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center text-gray-300 hover:text-white hover:bg-purple-600 transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center text-gray-300 hover:text-white hover:bg-purple-600 transition-colors">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center text-gray-300 hover:text-white hover:bg-purple-600 transition-colors">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center text-gray-300 hover:text-white hover:bg-purple-600 transition-colors">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-semibold mb-6">Product</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="hover:text-white transition-colors">Features</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Pricing</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Examples</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Updates</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">API</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-semibold mb-6">Resources</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Guides</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Help Center</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Career Tips</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Webinars</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-semibold mb-6">Company</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
+                <p class="mb-4 md:mb-0">
+                    &copy; 2025 CareerSense AI. All rights reserved.
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-white transition-colors text-sm">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors text-sm">Terms of Service</a>
+                    <a href="#" class="hover:text-white transition-colors text-sm">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize charts after DOM loads
+
+    document.addEventListener('DOMContentLoaded', function() {
+    // 1️⃣ Skills Chart
+    const skillsCtx = document.getElementById('skillsChart').getContext('2d');
+    new Chart(skillsCtx, {
+        type: 'bar',
+        data: {
+            labels: ['React', 'TypeScript', 'Node.js', 'AWS', 'UI/UX', 'Python'],
+            datasets: [{
+                label: 'Demand Score',
+                data: [92, 87, 78, 85, 82, 65],
+                backgroundColor: [
+                    'rgba(139, 92, 246, 0.7)',
+                    'rgba(124, 58, 237, 0.7)',
+                    'rgba(104, 56, 222, 0.7)',
+                    'rgba(79, 70, 229, 0.7)',
+                    'rgba(109, 40, 217, 0.7)',
+                    'rgba(124, 58, 237, 0.4)'
+                ],
+                borderColor: [
+                    'rgba(139, 92, 246, 1)',
+                    'rgba(124, 58, 237, 1)',
+                    'rgba(104, 56, 222, 1)',
+                    'rgba(79, 70, 229, 1)',
+                    'rgba(109, 40, 217, 1)',
+                    'rgba(124, 58, 237, 0.7)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, max: 100, grid: { drawBorder: false } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+
+    // 2️⃣ Resume Upload & Analysis
+    const resumeUpload = document.getElementById('resume-upload');
+    const fileInput = document.getElementById('file-upload');
+    const heroUpload = document.getElementById('hero-upload');
+    const analysisDashboard = document.getElementById('analysis-dashboard');
+
+    [heroUpload, resumeUpload].forEach(btn => 
+        btn.addEventListener('click', () => fileInput.click())
+    );
+
+    fileInput.addEventListener('change', function(e) {
+        if (e.target.files.length > 0) {
+            resumeUpload.innerHTML = `
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin mb-4 flex items-center justify-center">
+                        <i class="fas fa-spinner text-purple-600"></i>
+                    </div>
+                    <p class="text-purple-600 font-medium">Analyzing your resume...</p>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                analysisDashboard.classList.remove('hidden');
+                analysisDashboard.scrollIntoView({ behavior: 'smooth' });
+                resumeUpload.innerHTML = `
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full text-purple-500 mb-4">
+                        <i class="fas fa-cloud-upload-alt text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Drag & Drop Your Resume</h3>
+                    <p class="text-gray-500 mb-4">or click to browse files (PDF, DOC, DOCX)</p>
+                    <button class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-all">
+                        <i class="fas fa-file-upload mr-2"></i> Select File
+                    </button>
+                    <p class="text-xs text-gray-400 mt-4">We don't store your resume after analysis</p>
+                `;
+            }, 2000);
+        }
+    });
+
+    // 3️⃣ Skill Pill Hover Animation
+    document.querySelectorAll('.skill-pill').forEach(pill => {
+        pill.addEventListener('mouseenter', () => pill.style.boxShadow = '0 4px 6px -1px rgba(139, 92, 246, 0.3)');
+        pill.addEventListener('mouseleave', () => pill.style.boxShadow = 'none');
+    });
+
+    // 4️⃣ Smooth Scrolling for Nav Links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+        });
+    });
+
+    // 5️⃣ Fetch Recommendations from Backend
+    const jobList = document.getElementById('job-list');
+    const courseList = document.getElementById('course-list');
+    const skillList = document.getElementById('skill-list');
+
+    async function fetchRecommendations() {
+        try {
+            const [jobsRes, coursesRes, skillsRes] = await Promise.all([
+                fetch('http://127.0.0.1:8000/jobs'),
+                fetch('http://127.0.0.1:8000/courses'),
+                fetch('http://127.0.0.1:8000/skills')
+            ]);
+
+            const jobs = await jobsRes.json();
+            const courses = await coursesRes.json();
+            const skills = await skillsRes.json();
+
+            jobList.innerHTML = jobs.map(job => `<li class="mb-2">${job.title} - <span class="text-gray-500">${job.company}</span></li>`).join('');
+            courseList.innerHTML = courses.map(course => `<li class="mb-2">${course.name} (${course.platform})</li>`).join('');
+            skillList.innerHTML = skills.map(skill => `<li class="mb-2">${skill.name} - Demand Score: ${skill.demand}</li>`).join('');
+        } catch (err) {
+            console.error('Error fetching recommendations:', err);
+        }
+    }
+
+    fetchRecommendations(); // call on page load
+});
+
+// Fetch real-time jobs from backend
+// Fetch and display jobs
+async function fetchRealTimeJobs(keyword = "python", location = "Bangalore") {
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/realtime-jobs?keyword=${keyword}&location=${location}`);
+        const data = await response.json();
+        const jobsContainer = document.getElementById("jobs-container");
+        jobsContainer.innerHTML = ""; // Clear previous jobs
+
+        data.jobs.forEach(job => {
+            jobsContainer.innerHTML += `
+                <li class="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col md:flex-row justify-between items-start md:items-center">
+                    <div>
+                        <h3 class="text-lg font-semibold text-purple-700">${job.title}</h3>
+                        <p class="text-gray-600">${job.company} - ${job.location}</p>
+                    </div>
+                    <a href="${job.url}" target="_blank" class="mt-2 md:mt-0 inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-300">
+                        Apply
+                    </a>
+                </li>
+            `;
+        });
+    } catch (err) {
+        console.error("Error fetching jobs:", err);
+    }
+}
+
+
+// Call on page load
+fetchRealTimeJobs();
+
+// Refresh jobs every 2 minutes (120000 ms)
+setInterval(() => {
+    fetchRealTimeJobs();
+}, 120000);
+
+
+    </script>
+</body>
+</html>
