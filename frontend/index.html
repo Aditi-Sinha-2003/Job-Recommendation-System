@@ -349,11 +349,54 @@
             </div>
         </div>
     </section>
-    <section>
-        <h2 class="text-2xl font-bold text-gray-800 mb-4" style="text-align: center;">Real-Time Job Listings</h2>
-        <ul id="jobs-container" class="grid gap-4"></ul>
+    <!-- Real-Time Job Listings Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                    Real-Time <span class="bg-gradient-to-r from-purple-600 to-indigo-500 bg-clip-text text-transparent">Job Listings</span>
+                </h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                    Search for the latest job opportunities in your field and location
+                </p>
+            </div>
+            
+            <div class="flex flex-col md:flex-row gap-4 mb-8">
+                <!-- Keyword Input -->
+                <input 
+                    type="text" 
+                    id="keyword-input" 
+                    placeholder="Enter job title (e.g. Python, Java, Data Analyst)" 
+                    class="flex-1 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                />
 
+                <!-- Location Input -->
+                <input 
+                    type="text" 
+                    id="location-input" 
+                    placeholder="Enter location (e.g. Bangalore, Delhi)" 
+                    class="flex-1 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                />
 
+                <!-- Search Button -->
+                <button 
+                    onclick="handleSearch()" 
+                    class="px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-500 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-indigo-600 transition-all shadow-lg hover:shadow-purple-200">
+                    <i class="fas fa-search mr-2"></i> Search Jobs
+                </button>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading-state" class="hidden text-center py-12">
+                <div class="inline-flex items-center px-4 py-2 rounded-full bg-purple-50 text-purple-700">
+                    <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-purple-600 mr-3"></div>
+                    <span>Searching for jobs...</span>
+                </div>
+            </div>
+
+            <!-- Jobs Container -->
+            <div id="jobs-container" class="grid gap-6"></div>
+        </div>
     </section>
     <!-- Resume Analyzer -->
     <section class="py-20">
@@ -517,75 +560,10 @@
                         </div>
                     </div>
                     
-                    <div class="space-y-4">
-                        <!-- Job 1 -->
-                        <div class="job-card glass-card p-6 rounded-xl shadow-sm hover:shadow-md transition-all relative">
-                            <div class="flex justify-between">
-                                <div>
-                                    <h4 class="text-xl font-semibold text-gray-800 mb-1">Senior Frontend Developer</h4>
-                                    <p class="text-purple-600 font-medium">TechSolutions Inc.</p>
-                                </div>
-                                <div class="flex items-center h-8 px-3 rounded-full bg-green-100 text-green-800 text-sm font-medium">
-                                    <span class="relative flex h-2 w-2 mr-2">
-                                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                                        <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                                    </span>
-                                    95% Match
-                                </div>
-                            </div>
-                            <p class="text-gray-600 my-3">Looking for an experienced React developer to lead our frontend team and architect scalable solutions.</p>
-                            <div class="flex flex-wrap gap-2 mb-4">
-                                <span class="skill-pill px-3 py-1 bg-purple-50 text-purple-700 text-sm rounded-full hover:bg-purple-100">React</span>
-                                <span class="skill-pill px-3 py-1 bg-purple-50 text-purple-700 text-sm rounded-full hover:bg-purple-100">TypeScript</span>
-                                <span class="skill-pill px-3 py-1 bg-purple-50 text-purple-700 text-sm rounded-full hover:bg-purple-100">Redux</span>
-                                <span class="skill-pill px-3 py-1 bg-purple-50 text-purple-700 text-sm rounded-full hover:bg-purple-100">Jest</span>
-                            </div>
-                            <div class="flex flex-wrap items-center justify-between pt-4 border-t border-gray-100">
-                                <div class="flex items-center text-sm text-gray-500">
-                                    <i class="fas fa-map-marker-alt mr-2"></i>
-                                    <span>San Francisco, CA (Remote)</span>
-                                </div>
-                                <div class="text-sm font-medium text-gray-800">$120k - $150k</div>
-                            </div>
-                        </div>
-                        
-                        <!-- Job 2 -->
-                        <div class="job-card glass-card p-6 rounded-xl shadow-sm hover:shadow-md transition-all relative">
-                            <div class="flex justify-between">
-                                <div>
-                                    <h4 class="text-xl font-semibold text-gray-800 mb-1">UI/UX Engineer</h4>
-                                    <p class="text-purple-600 font-medium">DesignHub</p>
-                                </div>
-                                <div class="flex items-center h-8 px-3 rounded-full bg-green-100 text-green-800 text-sm font-medium">
-                                    <span class="relative flex h-2 w-2 mr-2">
-                                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                                        <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                                    </span>
-                                    89% Match
-                                </div>
-                            </div>
-                            <p class="text-gray-600 my-3">Join our design team to create beautiful, accessible interfaces with React and design systems.</p>
-                            <div class="flex flex-wrap gap-2 mb-4">
-                                <span class="skill-pill px-3 py-1 bg-purple-50 text-purple-700 text-sm rounded-full hover:bg-purple-100">UI Design</span>
-                                <span class="skill-pill px-3 py-1 bg-purple-50 text-purple-700 text-sm rounded-full hover:bg-purple-100">Figma</span>
-                                <span class="skill-pill px-3 py-1 bg-purple-50 text-purple-700 text-sm rounded-full hover:bg-purple-100">React</span>
-                                <span class="skill-pill px-3 py-1 bg-purple-50 text-purple-700 text-sm rounded-full hover:bg-purple-100">Storybook</span>
-                            </div>
-                            <div class="flex flex-wrap items-center justify-between pt-4 border-t border-gray-100">
-                                <div class="flex items-center text-sm text-gray-500">
-                                    <i class="fas fa-map-marker-alt mr-2"></i>
-                                    <span>New York, NY (Hybrid)</span>
-                                </div>
-                                <div class="text-sm font-medium text-gray-800">$110k - $140k</div>
-                            </div>
-                        </div>
+                    <div class="space-y-4" id="dashboard-jobs-container">
+                         <!-- Jobs will be injected here dynamically -->
                     </div>
-                    
-                    <div class="mt-6 flex justify-center">
-                        <button class="px-6 py-3 border border-purple-600 text-purple-600 font-medium rounded-lg hover:bg-purple-50 transition-colors">
-                            View All Recommended Jobs (12)
-                        </button>
-                    </div>
+
                 </div>
                 
                 <!-- Market Trends & Courses -->
@@ -677,6 +655,7 @@
             </div>
         </div>
     </section>
+
 
     <!-- Testimonials -->
     <section id="testimonials" class="py-20 bg-gradient-to-br from-purple-600 to-indigo-600 text-white">
@@ -914,6 +893,9 @@
         }
     });
 
+    
+
+
     // 2️⃣ Resume Upload & Analysis
     const resumeUpload = document.getElementById('resume-upload');
     const fileInput = document.getElementById('file-upload');
@@ -926,6 +908,9 @@
 
     fileInput.addEventListener('change', function(e) {
         if (e.target.files.length > 0) {
+            const file = e.target.files[0];   
+            
+            // Show loading state
             resumeUpload.innerHTML = `
                 <div class="flex flex-col items-center">
                     <div class="w-16 h-16 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin mb-4 flex items-center justify-center">
@@ -935,21 +920,65 @@
                 </div>
             `;
             
-            setTimeout(() => {
-                analysisDashboard.classList.remove('hidden');
-                analysisDashboard.scrollIntoView({ behavior: 'smooth' });
-                resumeUpload.innerHTML = `
-                    <div class="inline-flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full text-purple-500 mb-4">
-                        <i class="fas fa-cloud-upload-alt text-2xl"></i>
-                    </div>
-                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Drag & Drop Your Resume</h3>
-                    <p class="text-gray-500 mb-4">or click to browse files (PDF, DOC, DOCX)</p>
-                    <button class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-all">
-                        <i class="fas fa-file-upload mr-2"></i> Select File
-                    </button>
-                    <p class="text-xs text-gray-400 mt-4">We don't store your resume after analysis</p>
-                `;
-            }, 2000);
+            // Simulate resume analysis and fetch related jobs
+            // Send resume to backend for ML-based recommendations
+setTimeout(async () => {
+    analysisDashboard.classList.remove('hidden');
+    analysisDashboard.scrollIntoView({ behavior: 'smooth' });
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/api/resume-jobs?keyword=python&location=Bangalore`, {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+        console.log("Ranked jobs:", data.jobs);
+
+        const jobsContainer = document.getElementById("dashboard-jobs-container");
+        jobsContainer.innerHTML = "";
+
+        if (!data.jobs || data.jobs.length === 0) {
+            jobsContainer.innerHTML = `<p class="text-center text-gray-500">No matching jobs found.</p>`;
+            return;
+        }
+
+        data.jobs.forEach(job => {
+            jobsContainer.innerHTML += `
+                <div class="job-card glass-card p-6 rounded-xl shadow-sm hover:shadow-md transition-all relative">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-1">${job.title || "Untitled Job"}</h4>
+                    <p class="text-purple-600 font-medium">${job.company || "Unknown Company"}</p>
+                    <p class="text-gray-600 my-3">Location: ${job.location || "N/A"}</p>
+                    <p class="text-gray-600">Match Score: ${(job.score * 100).toFixed(1)}%</p>
+                    <a href="${job.apply_link}" target="_blank" 
+                       class="mt-3 inline-block px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+                        Apply
+                    </a>
+                </div>
+            `;
+        });
+
+    } catch (err) {
+        console.error("Error uploading resume:", err);
+    }
+
+    // Reset upload button UI
+    resumeUpload.innerHTML = `
+        <div class="inline-flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full text-purple-500 mb-4">
+            <i class="fas fa-cloud-upload-alt text-2xl"></i>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">Drag & Drop Your Resume</h3>
+        <p class="text-gray-500 mb-4">or click to browse files (PDF, DOC, DOCX)</p>
+        <button class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-all">
+            <i class="fas fa-file-upload mr-2"></i> Select File
+        </button>
+        <p class="text-xs text-gray-400 mt-4">We don't store your resume after analysis</p>
+    `;
+}, 2000);
+
         }
     });
 
@@ -995,43 +1024,304 @@
     fetchRecommendations(); // call on page load
 });
 
-// Fetch real-time jobs from backend
-// Fetch and display jobs
+// Unified job fetching function for the main job listings section
 async function fetchRealTimeJobs(keyword = "python", location = "Bangalore") {
+    const loadingState = document.getElementById("loading-state");
+    const jobsContainer = document.getElementById("jobs-container");
+    
     try {
-        const response = await fetch(`http://127.0.0.1:8000/realtime-jobs?keyword=${keyword}&location=${location}`);
-        const data = await response.json();
-        const jobsContainer = document.getElementById("jobs-container");
-        jobsContainer.innerHTML = ""; // Clear previous jobs
-
-        data.jobs.forEach(job => {
-            jobsContainer.innerHTML += `
-                <li class="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col md:flex-row justify-between items-start md:items-center">
-                    <div>
-                        <h3 class="text-lg font-semibold text-purple-700">${job.title}</h3>
-                        <p class="text-gray-600">${job.company} - ${job.location}</p>
+        // Show loading state
+        loadingState.classList.remove("hidden");
+        jobsContainer.innerHTML = "";
+        
+        // Try to fetch from our backend API first
+        let data = null;
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/realtime-jobs?keyword=${encodeURIComponent(keyword)}&location=${encodeURIComponent(location)}&limit=20`);
+            if (response.ok) {
+                data = await response.json();
+            }
+        } catch (error) {
+            console.log("Backend API not available, using fallback data");
+        }
+        
+        // If backend fails, use RemoteOK real-time data with only valid direct links
+        if (!data || !data.jobs || data.jobs.length === 0) {
+            console.log('Backend unavailable, fetching real-time jobs from RemoteOK...');
+            data = {
+                jobs: await getFallbackJobs(keyword, location),
+                sources: ["Remote OK (Live)"],
+                success: true
+            };
+        }
+        
+        // Hide loading state
+        loadingState.classList.add("hidden");
+        
+        if (!data.jobs || data.jobs.length === 0) {
+            jobsContainer.innerHTML = `
+                <div class="text-center py-12">
+                    <div class="inline-flex items-center px-4 py-2 rounded-full bg-gray-50 text-gray-600">
+                        <i class="fas fa-search mr-2"></i>
+                        <span>No jobs found for "${keyword}" in "${location}". Try different keywords or location.</span>
                     </div>
-                    <a href="${job.url}" target="_blank" class="mt-2 md:mt-0 inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-300">
-                        Apply
-                    </a>
-                </li>
+                </div>
             `;
+            return;
+        }
+
+        // Show data source info
+        if (data.sources && data.sources.length > 0) {
+            const sourceInfo = document.createElement('div');
+            sourceInfo.className = 'mb-4 p-3 bg-blue-50 rounded-lg';
+            sourceInfo.innerHTML = `
+                <div class="flex items-center text-sm text-blue-700">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    <span>Jobs from: ${data.sources.join(', ')}</span>
+                </div>
+            `;
+            jobsContainer.appendChild(sourceInfo);
+        }
+
+        const jobsToRender = data.jobs.filter(j => 
+            j && 
+            j.apply_link && 
+            typeof j.apply_link === 'string' && 
+            j.apply_link.trim() !== '' && 
+            j.apply_link !== '#' && 
+            j.apply_link !== 'https://example.com' &&
+            /^https?:\/\//.test(j.apply_link) && 
+            !j.apply_link.includes('example.com') && 
+            !j.apply_link.includes('placeholder')
+        );
+        jobsToRender.forEach(job => {
+            const jobCard = document.createElement('div');
+            jobCard.className = 'glass-card p-6 rounded-xl shadow-sm hover:shadow-md transition-all';
+            jobCard.innerHTML = `
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex-1">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">${job.title || 'Job Title Not Available'}</h3>
+                        <p class="text-purple-600 font-medium mb-1">${job.company || 'Company Not Specified'}</p>
+                        <p class="text-gray-600 text-sm mb-2">
+                            <i class="fas fa-map-marker-alt mr-1"></i>
+                            ${job.location || 'Location Not Specified'}
+                        </p>
+                        ${job.description ? `<p class="text-gray-600 text-sm mb-3">${job.description}</p>` : ''}
+                        ${job.salary ? `<p class="text-green-600 text-sm font-medium mb-2"><i class="fas fa-dollar-sign mr-1"></i>${job.salary}</p>` : ''}
+                    </div>
+                    <div class="flex flex-col items-end ml-4">
+                        <div class="flex items-center h-8 px-3 rounded-full bg-green-100 text-green-800 text-sm font-medium mb-2">
+                            <span class="relative flex h-2 w-2 mr-2">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                            </span>
+                            Active
+                        </div>
+                        <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">${job.source || 'Unknown'}</span>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+                    <div class="text-sm text-gray-500">
+                        <i class="fas fa-clock mr-1"></i>
+                        <span>${job.posted_date || 'Posted recently'}</span>
+                    </div>
+                    <a href="${job.apply_link}" target="_blank" 
+                       class="px-6 py-2 bg-gradient-to-r from-purple-600 to-indigo-500 text-white rounded-lg hover:from-purple-700 hover:to-indigo-600 transition-all shadow-sm hover:shadow-md"
+                       onclick="return validateAndOpenLink('${job.apply_link}', '${job.title}')">
+                        <i class="fas fa-external-link-alt mr-2"></i>
+                        Apply Now
+                    </a>
+                </div>
+            `;
+            jobsContainer.appendChild(jobCard);
         });
-    } catch (err) {
-        console.error("Error fetching jobs:", err);
+        
+    } catch (error) {
+        console.error("Error fetching jobs:", error);
+        loadingState.classList.add("hidden");
+        jobsContainer.innerHTML = `
+            <div class="text-center py-12">
+                <div class="inline-flex items-center px-4 py-2 rounded-full bg-red-50 text-red-600">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    <span>Error loading jobs. Please check your connection and try again.</span>
+                </div>
+            </div>
+        `;
     }
 }
 
+// Fetch real-time jobs from RemoteOK API - always live data, no predefined jobs
+async function getFallbackJobs(keyword, location) {
+    try {
+        console.log('Fetching real-time jobs from RemoteOK...');
+        const res = await fetch('https://remoteok.io/api');
+        const json = await res.json();
+        
+        // Filter valid posts with real-time data - only jobs with working apply links
+        const items = Array.isArray(json) ? json : [];
+        const filtered = items
+            .filter(j => j && typeof j.position === 'string' && j.position.toLowerCase().includes(keyword.toLowerCase()))
+            .filter(j => j.url && typeof j.url === 'string' && j.url.trim() !== '' && j.url !== '#' && j.url !== 'https://example.com')
+            .filter(j => /^https?:\/\//.test(j.url) && !j.url.includes('example.com') && !j.url.includes('placeholder'))
+            .slice(0, 20)
+            .map(j => ({
+                title: j.position,
+                company: j.company || '',
+                location: 'Remote',
+                apply_link: j.url,
+                description: (j.description || '').replace(/<[^>]+>/g, '').slice(0, 200) + '...',
+                salary: j.salary || '',
+                posted_date: j.date || '',
+                source: 'Remote OK (Live)',
+                logo: j.company_logo || ''
+            }));
+        
+        console.log(`Found ${filtered.length} real-time jobs for "${keyword}"`);
+        return filtered;
+    } catch (e) {
+        console.error('Real-time job fetch failed', e);
+        return [];
+    }
+}
 
-// Call on page load
-fetchRealTimeJobs();
+async function fetchRecommendedJobs(keyword = "python", location = "Bangalore") {
+    try {
+        const jobsContainer = document.getElementById("dashboard-jobs-container");
+        jobsContainer.innerHTML = ""; // Clear old jobs
 
-// Refresh jobs every 2 minutes (120000 ms)
-setInterval(() => {
-    fetchRealTimeJobs();
-}, 120000);
+        // Try to fetch from our backend API first
+        let data = null;
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/realtime-jobs?keyword=${encodeURIComponent(keyword)}&location=${encodeURIComponent(location)}&limit=10`);
+            if (response.ok) {
+                data = await response.json();
+            }
+        } catch (error) {
+            console.log("Backend API not available, using fallback data");
+        }
+        
+        // If backend fails, use RemoteOK real-time data
+        if (!data || !data.jobs || data.jobs.length === 0) {
+            console.log('Backend unavailable, fetching real-time recommended jobs...');
+            data = {
+                jobs: (await getFallbackJobs(keyword, location)).slice(0, 5)
+            };
+        }
+        
+        if (!data.jobs || data.jobs.length === 0) {
+            jobsContainer.innerHTML = `
+                <div class="text-center py-8">
+                    <div class="inline-flex items-center px-4 py-2 rounded-full bg-gray-50 text-gray-600">
+                        <i class="fas fa-search mr-2"></i>
+                        <span>No jobs found for "${keyword}" in "${location}".</span>
+                    </div>
+                </div>
+            `;
+            return;
+        }
 
+        data.jobs.forEach((job, index) => {
+            // Dummy decreasing match score
+            const matchScore = Math.floor(95 - (index * 3));  
 
+            jobsContainer.innerHTML += `
+                <div class="job-card glass-card p-6 rounded-xl shadow-sm hover:shadow-md transition-all relative">
+                    <div class="flex justify-between">
+                        <div>
+                            <h4 class="text-xl font-semibold text-gray-800 mb-1">${job.title || 'Job Title Not Available'}</h4>
+                            <p class="text-purple-600 font-medium">${job.company || 'Company Not Specified'}</p>
+                        </div>
+                        <div class="flex items-center h-8 px-3 rounded-full bg-green-100 text-green-800 text-sm font-medium">
+                            <span class="relative flex h-2 w-2 mr-2">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                            </span>
+                            ${matchScore}% Match
+                        </div>
+                    </div>
+
+                    <p class="text-gray-600 my-3">Job location: ${job.location || "Not specified"}</p>
+                    ${job.description ? `<p class="text-gray-500 text-sm mb-3">${job.description}</p>` : ''}
+                    ${job.salary ? `<p class="text-green-600 text-sm font-medium mb-3"><i class="fas fa-dollar-sign mr-1"></i>${job.salary}</p>` : ''}
+
+                    <!-- 🔥 New Match Score Line -->
+                    <p class="text-gray-600 text-sm mb-3">Match Score: ${matchScore}%</p>
+
+                    <div class="flex flex-wrap items-center justify-between pt-4 border-t border-gray-100">
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            <span>${job.location || "N/A"}</span>
+                            <span class="mx-2">•</span>
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">${job.source || 'Unknown'}</span>
+                        </div>
+                        <a href="${job.apply_link}" target="_blank" 
+                            class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                            onclick="return validateAndOpenLink('${job.apply_link}', '${job.title}')">
+                            Apply
+                        </a>
+                    </div>
+                </div>
+            `;
+        });
+
+    } catch (error) {
+        console.error("Error fetching jobs:", error);
+        const jobsContainer = document.getElementById("dashboard-jobs-container");
+        jobsContainer.innerHTML = `
+            <div class="text-center py-12">
+                <div class="inline-flex items-center px-4 py-2 rounded-full bg-red-50 text-red-600">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    <span>Error loading jobs. Please try again.</span>
+                </div>
+            </div>
+        `;
+    }
+}
+
+// Function when "Search" button is clicked
+function handleSearch() {
+    const keyword = document.getElementById("keyword-input").value || "python";
+    const location = document.getElementById("location-input").value || "Bangalore";
+    fetchRealTimeJobs(keyword, location);
+}
+
+// Add Enter key support for search inputs
+document.addEventListener('DOMContentLoaded', function() {
+    const keywordInput = document.getElementById("keyword-input");
+    const locationInput = document.getElementById("location-input");
+    
+    [keywordInput, locationInput].forEach(input => {
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                handleSearch();
+            }
+        });
+    });
+    
+         // Load initial jobs
+     fetchRealTimeJobs("python", "Bangalore");
+ });
+ 
+ // Function to validate and open job application links
+ function validateAndOpenLink(url, jobTitle) {
+     // Check if the URL is valid and not an example/placeholder
+     if (!url || 
+         url === '#' || 
+         url === 'https://example.com' || 
+         url.includes('example.com') || 
+         url.includes('placeholder') ||
+         !url.startsWith('http')) {
+         
+         // Show error message
+         alert(`Sorry, the apply link for "${jobTitle}" is not available. Please try searching for other jobs or contact the company directly.`);
+         return false;
+     }
+     
+     // If URL is valid, allow the link to open
+     return true;
+ }
+
+ 
     </script>
 </body>
 </html>
