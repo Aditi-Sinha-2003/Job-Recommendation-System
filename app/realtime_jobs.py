@@ -9,7 +9,7 @@ import html
 router = APIRouter()
 
 API_URL = "https://jsearch.p.rapidapi.com/search"
-API_KEY = "c66b408162mshdd2ed6f28f9e939p1cbf58jsn05f1e8c07304"
+API_KEY = "#"
 
 HEADERS = {
     "x-rapidapi-key": API_KEY,
@@ -204,3 +204,4 @@ async def realtime_jobs(keyword: str = "python", limit: int = 20):
             print("Arbeitnow failed:", e)
 
     return {"jobs": jobs[:limit], "success": True, "sources": ["RemoteOK", "Arbeitnow"]}
+
